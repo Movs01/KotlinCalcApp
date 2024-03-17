@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         calculator = Calculator()
         resultTextView = findViewById(R.id.result)
+
         // Обработчики событий для кнопок цифр
         val numberButtons = listOf<Button>(
             findViewById(R.id.zero), findViewById(R.id.one), findViewById(R.id.two),
@@ -83,30 +84,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Установка обработчиков событий для кнопок операторов и равно
-        operatorButtons.forEach { button ->
-            button.setOnClickListener {
-                try {
-                    val currentText = resultTextView.text.toString()
-                    val operator = button.text.toString()
-                    calculator.setOperand1(currentText.toDouble())
-                    calculator.setOperator(operator)
-                    resultTextView.text = "0"
-                } catch (e: NumberFormatException) {
-                    Toast.makeText(this, "Ошибка ввода числа", Toast.LENGTH_SHORT).show()
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Произошла ошибка", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
 
         // Обработчик события для кнопки равно
         findViewById<Button>(R.id.equals).setOnClickListener {
             try {
                 val currentText = resultTextView.text.toString()
-                    calculator.setOperand2(currentText.toDouble())
-                    val result = calculator.calculate()
-                    resultTextView.text = result.toString()
+                calculator.setOperand2(currentText.toDouble())
+                val result = calculator.calculate()
+                resultTextView.text = result.toString()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "Ошибка ввода числа", Toast.LENGTH_SHORT).show()
             } catch (e: ArithmeticException) {
@@ -155,14 +140,10 @@ class MainActivity : AppCompatActivity() {
         // Обработчик события для кнопки десятичной точки
         commaButton.setOnClickListener {
             try {
-                if (resultTextView.text.toString() != "Ошибка") {
-                    val currentText = resultTextView.text.toString()
-                    if (!currentText.contains(".")) {
-                        resultTextView.text = "$currentText."
-                    }
-                } else {
-                    resultTextView.text = "0"
-                }
+                val currentText = resultTextView.text.toString()
+                if (!currentText.contains("."))
+                    resultTextView.text = "$currentText."
+
             } catch (e: Exception) {
                 Toast.makeText(this, "Произошла ошибка", Toast.LENGTH_SHORT).show()
             }
